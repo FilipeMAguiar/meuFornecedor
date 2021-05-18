@@ -1,3 +1,1 @@
-# meuFornecedorBackend
-# meuFornecedor
 # meuFornecedor
