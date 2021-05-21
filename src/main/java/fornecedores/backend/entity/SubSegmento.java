@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,9 +27,14 @@ public class SubSegmento implements Serializable {
     @Column(name = "NOME_SUB_SEGMENTO")
     private String nomeSubSegmento;
 
-    @Column(name = "ID_SEGMENTO")
-    private Long idSegmento;
+    @ManyToOne
+    private Segmento segmento;
+/*
+    @ManyToOne
+    private Fornecedor fornecedor;
 
-    @Column(name = "ID_FORNECEDOR")
-    private Long idFornecedor;
+ */
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE }, mappedBy = "subSegmentos")
+    private List<Fornecedor> fornecedor;
 }

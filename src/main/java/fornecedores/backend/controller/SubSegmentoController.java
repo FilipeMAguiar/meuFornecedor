@@ -1,7 +1,9 @@
 package fornecedores.backend.controller;
 
-import fornecedores.backend.dto.request.SubSegmentoRequest;
+import fornecedores.backend.dto.request.CriaSubSegmentoRequest;
 import fornecedores.backend.dto.response.ResponseMessage;
+import fornecedores.backend.dto.response.SubSegmentoResponseDTO;
+import fornecedores.backend.dto.response.SubSegmentoWrapperResponseDTO;
 import fornecedores.backend.entity.SubSegmento;
 import fornecedores.backend.service.SubSegmentoService;
 import lombok.AllArgsConstructor;
@@ -17,12 +19,12 @@ public class SubSegmentoController {
     private final SubSegmentoService service;
 
     @PostMapping
-    public ResponseMessage criarSubSegmento(@RequestBody SubSegmentoRequest request) {
+    public ResponseMessage criarSubSegmento(@RequestBody CriaSubSegmentoRequest request) {
         return this.service.criarSubSegmento(request);
     }
 
     @GetMapping
-    public List<SubSegmento> listarSubSegmentos(@RequestParam(required = false) Long id){
+    public List<SubSegmentoResponseDTO> listarSubSegmentos(@RequestParam(required = false) Long id){
         return this.service.listarSubSegmentos(id);
     }
 }

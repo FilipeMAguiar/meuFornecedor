@@ -39,9 +39,9 @@ public class UsuarioController {
         return this.service.atualizarUsuario(id, request);
     }
 
-    @PutMapping("/avaliacao/{id}")
-    public ResponseMessage avaliarFornecedor(@PathVariable Long idFornecedor, @RequestBody AvaliacaoRequest request) throws BusinessException {
-        return this.service.avaliarFornecedor(idFornecedor, request);
+    @PostMapping("/avaliacao")
+    public ResponseMessage avaliarFornecedor(@RequestBody AvaliacaoRequest request) throws BusinessException {
+        return this.service.avaliarFornecedor(request);
     }
 
     @PutMapping("/senha")

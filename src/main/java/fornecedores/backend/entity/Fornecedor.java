@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,7 +19,7 @@ public class Fornecedor implements Serializable {
     private static final long seriaVersionUID = 1L;
 
     @Id
-    @Column(unique = true)
+    @Column(name = "ID_FORNECEDOR")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idFornecedor;
 
@@ -102,12 +103,14 @@ public class Fornecedor implements Serializable {
     @Column(name = "EMAIL_CONTATO_FORNECEDOR")
     private String emailContato;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "TB_SUB_SEGMENTO")
-    private List<SubSegmento> subSegmento;
-
-    @OneToMany
-    @JoinTable(name = "TB_AVALIACAO")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedor")
     private List<Avaliacao> avaliacao;
 
+    /*
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedor")
+    private List<SubSegmento> subSegmentos;
+     */
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(name = "FORNECEDOR_SUBSEGMENTO", joinColumns = @JoinColumn(name = "ID_FORNECEDOR"), inverseJoinColumns = @JoinColumn(name = "ID_SUB_SEGMENTO"))
+    private List<SubSegmento> subSegmentos;
 }

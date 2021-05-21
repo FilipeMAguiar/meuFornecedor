@@ -6,14 +6,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AvaliacaoRequest {
+    private String idFornecedor;
 
-    private Long idUsuario;
+    private String idUsuario;
 
-    private Long atendimento;
+    private String atendimento;
 
-    private Long precos;
+    private String precos;
 
-    private Long confiabilidade;
+    private String confiabilidade;
 
-    private Long qualidadeProduto;
+    private String qualidadeProduto;
 }
