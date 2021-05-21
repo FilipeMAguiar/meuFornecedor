@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class Usuario implements Serializable {
     private static final long seriaVersionUID = 1L;
 
     @Id
-    @Column(unique = true)
+    @Column(name = "ID_USUARIO")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idUsuario;
 
@@ -45,4 +46,6 @@ public class Usuario implements Serializable {
     @Column(name = "SENHA_USUARIO")
     private String senha;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private List<Avaliacao> avaliacoes;
 }

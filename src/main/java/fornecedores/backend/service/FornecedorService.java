@@ -1,16 +1,17 @@
 package fornecedores.backend.service;
 
 import fornecedores.backend.domain.TipoUsuarioEnum;
+import fornecedores.backend.dto.AvaliacaoDTO;
 import fornecedores.backend.dto.BuscaCepDTO;
 import fornecedores.backend.dto.request.AtualizarSenhaRequest;
 import fornecedores.backend.dto.request.AvaliacaoRequest;
 import fornecedores.backend.dto.request.FornecedorRequest;
+import fornecedores.backend.dto.response.FornecedorDTO;
+import fornecedores.backend.dto.response.FornecedorResponseDTO;
 import fornecedores.backend.dto.response.ResponseMessage;
-import fornecedores.backend.entity.Avaliacao;
-import fornecedores.backend.entity.Fornecedor;
+import fornecedores.backend.entity.*;
 import fornecedores.backend.exception.BusinessException;
-import fornecedores.backend.repository.AvaliacaoRepository;
-import fornecedores.backend.repository.FornecedorRepository;
+import fornecedores.backend.repository.*;
 import fornecedores.backend.util.JsonUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,29 +33,33 @@ public class FornecedorService {
     
     private FornecedorRepository repository;
     private AvaliacaoRepository avaliacaoRepository;
-    private SubSegmentoService subSegmentoService;
+    private UsuarioRepository usuarioRepository;
+    private SubSegmentoRepository subSegmentoRepository;
 
-    public List<Fornecedor> listarFornecedor(Long id) {
-        List<Fornecedor> fornecedors = new ArrayList<>();
+    public List<FornecedorResponseDTO> listarFornecedor(Long id) {
+        List<FornecedorResponseDTO> responseDTOList = new ArrayList<>();
+        FornecedorResponseDTO responseDTO = new FornecedorResponseDTO();
         if (Objects.nonNull(id)){
-            Optional<Fornecedor> fornecedor = repository.findById(id);
-            fornecedor.ifPresent(fornecedors::add);
-            return fornecedors;
+            populaFornecedorId(id, responseDTOList, responseDTO);
+            return responseDTOList;
         } else {
-            return this.repository.findAll();
+            List<Fornecedor> fornecedorList = this.repository.findAll();
+            for (Fornecedor f: fornecedorList) {
+                populaFornecedores(responseDTOList, f);
+            }
+            return responseDTOList;
         }
     }
 
     public ResponseMessage criarFornecedor(FornecedorRequest request) throws BusinessException {
-        Fornecedor fornecedor = new Fornecedor();
         ResponseMessage response = new ResponseMessage();
+        Fornecedor fornecedor = new Fornecedor();
 
         populaFornecedor(request, fornecedor);
         populaEndereco(request, fornecedor);
         populaContato(request, fornecedor);
 
-        Fornecedor fornecedorSalvo = this.repository.save(fornecedor);
-        populaSubSegmento(request, fornecedorSalvo);
+        this.repository.save(fornecedor);
 
         response.setMessage("Fornecedor " + request.getNome() + " com o id " + fornecedor.getIdFornecedor() + " criado com sucesso!");
         return response;
@@ -63,6 +68,140 @@ public class FornecedorService {
     public ResponseMessage atualizarFornecedor(Long id, FornecedorRequest request) throws BusinessException {
         ResponseMessage response = new ResponseMessage();
         Fornecedor fornecedor = this.repository.findById(id).orElseThrow(() -> new BusinessException("Usuário não encontrado."));
+        checkCamposAndUpdate(request, fornecedor);
+
+        this.repository.save(fornecedor);
+        response.setMessage("Usuário atualizado com sucesso!");
+        return response;
+    }
+
+    public void avaliarFornecedor(AvaliacaoRequest request) throws BusinessException {
+        List<Avaliacao> avaliacaoList = new ArrayList<>();
+        Fornecedor fornecedor = this.repository.findById(Long.valueOf(request.getIdFornecedor())).orElseThrow(() -> new BusinessException("Usuário não encontrado."));
+        Avaliacao avaliacao = new Avaliacao();
+        populaAvaliacao(request, avaliacao);
+        avaliacaoRepository.save(avaliacao);
+        avaliacaoList.add(avaliacao);
+        fornecedor.setAvaliacao(avaliacaoList);
+        this.repository.save(fornecedor);
+    }
+
+    public ResponseMessage atualizarSenha(AtualizarSenhaRequest request) throws BusinessException {
+        ResponseMessage response = new ResponseMessage();
+        Fornecedor fornecedor = this.repository.findByEmail(request.getEmail());
+        if (!ObjectUtils.isEmpty(fornecedor)){
+            if (request.getNovaSenha().equals(fornecedor.getSenha())){
+                throw new BusinessException("Senha igual a anterior.");
+            } else {
+                fornecedor.setSenha(request.getNovaSenha());
+                this.repository.save(fornecedor);
+                response.setMessage("Senha atualizada com sucesso!");
+            }
+        } else {
+            throw new BusinessException("Fornecedor não encontrado.");
+        }
+        return response;
+    }
+
+    public ResponseMessage deletarFornecedor(Long id) {
+        ResponseMessage response = new ResponseMessage();
+        this.repository.deleteById(id);
+        response.setMessage("Fornecedor deletado com sucesso.");
+        return response;
+    }
+
+    private void populaFornecedor(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
+        fornecedor.setTipoUsuarioEnum(TipoUsuarioEnum.FORNECEDOR);
+        fornecedor.setNickFornecedor(validaNickname(request));
+        fornecedor.setCnpj(!ObjectUtils.isEmpty(request.getCnpj())? request.getCnpj() : "");
+        fornecedor.setNomeFornecedor(request.getNome());
+        fornecedor.setDescricaoFornecedor(!ObjectUtils.isEmpty(request.getDescricao())? request.getDescricao() : "");
+        fornecedor.setEmail(validaEmail(request));
+        fornecedor.setSenha(request.getSenha());
+        SubSegmento subSegmento = subSegmentoRepository.findById(Long.valueOf(request.getIdSubSegmento())).get();
+        fornecedor.setSubSegmento(subSegmento);
+    }
+
+    private void populaEndereco(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
+        buscarCamposByCep(request, fornecedor);
+        fornecedor.setComplemento(!ObjectUtils.isEmpty(request.getEndereco().getComplemento()) ? request.getEndereco().getComplemento() : "");
+        fornecedor.setNumero(!ObjectUtils.isEmpty(request.getEndereco().getNumero()) ? request.getEndereco().getNumero() : "");
+        fornecedor.setPais(!ObjectUtils.isEmpty(request.getEndereco().getPais()) ? request.getEndereco().getPais() : "");
+    }
+
+    private void populaContato(FornecedorRequest request, Fornecedor fornecedor) {
+        fornecedor.setWhatsapp(Optional.ofNullable(request.getContato().getWhatsapp()).orElse(""));
+        fornecedor.setSite(Optional.ofNullable(request.getContato().getSite()).orElse(""));
+        fornecedor.setInstagram(Optional.ofNullable(request.getContato().getInstagram()).orElse(""));
+        fornecedor.setEmailContato(Optional.ofNullable(request.getContato().getEmailContato()).orElse(""));
+        fornecedor.setTelefone(Optional.ofNullable(request.getContato().getTelefone()).orElse(""));
+    }
+
+    private void populaFornecedorId(Long id, List<FornecedorResponseDTO> response, FornecedorResponseDTO responseList) {
+        Fornecedor fornecedor = this.repository.findById(id).get();
+        responseList.setIdFornecedor(id.toString());
+        responseList.setNickFornecedor(fornecedor.getNickFornecedor());
+        responseList.setNomeFornecedor(fornecedor.getNomeFornecedor());
+        responseList.setEmailContato(fornecedor.getEmailContato());
+        responseList.setPais(fornecedor.getPais());
+        buildAvaliacaoId(responseList, fornecedor);
+        response.add(responseList);
+    }
+
+    static void populaFornecedores(List<FornecedorResponseDTO> responseDTOList, Fornecedor f) {
+        FornecedorResponseDTO responseList = new FornecedorResponseDTO();
+        responseList.setIdFornecedor(f.getIdFornecedor().toString());
+        responseList.setNickFornecedor(f.getNickFornecedor());
+        responseList.setNomeFornecedor(f.getNomeFornecedor());
+        responseList.setEmailContato(f.getEmailContato());
+        responseList.setPais(f.getPais());
+        buildAvaliacao(f, responseList);
+        responseDTOList.add(responseList);
+    }
+
+    private void populaAvaliacao(AvaliacaoRequest request, Avaliacao avaliacao) {
+        Usuario usuario = usuarioRepository.findById(Long.valueOf(request.getIdUsuario())).get();
+        avaliacao.setIdUsuario(usuario);
+        avaliacao.setAtendimento(Long.valueOf(request.getAtendimento()));
+        avaliacao.setConfiabilidade(Long.valueOf(request.getConfiabilidade()));
+        avaliacao.setPrecos(Long.valueOf(request.getPrecos()));
+        avaliacao.setQualidadeProduto(Long.valueOf(request.getQualidadeProduto()));
+        Fornecedor fornecedor = this.repository.findById(Long.valueOf(request.getIdFornecedor())).orElse(null);
+        avaliacao.setFornecedor(fornecedor);
+    }
+
+    private void buildAvaliacaoId(FornecedorResponseDTO responseList, Fornecedor fornecedor) {
+        List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
+        for (Avaliacao av : fornecedor.getAvaliacao()) {
+            AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
+            avaliacaoDTO.setAtendimento(av.getAtendimento());
+            avaliacaoDTO.setConfiabilidade(av.getConfiabilidade());
+            avaliacaoDTO.setPrecos(av.getPrecos());
+            avaliacaoDTO.setQualidadeProduto(av.getQualidadeProduto());
+            avaliacaoDTO.setIdAvaliacao(av.getIdAvaliacao());
+            avaliacaoDTO.setNickFornecedor(av.getFornecedor().getNickFornecedor());
+            avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());
+        }
+        responseList.setAvaliacoes(avaliacaoDTOList);
+    }
+
+    private static void buildAvaliacao(Fornecedor f, FornecedorResponseDTO responseList) {
+        List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
+        for (Avaliacao av : f.getAvaliacao()) {
+            AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
+            avaliacaoDTO.setAtendimento(av.getAtendimento());
+            avaliacaoDTO.setConfiabilidade(av.getConfiabilidade());
+            avaliacaoDTO.setPrecos(av.getPrecos());
+            avaliacaoDTO.setQualidadeProduto(av.getQualidadeProduto());
+            avaliacaoDTO.setIdAvaliacao(av.getIdAvaliacao());
+            avaliacaoDTO.setNickFornecedor(av.getFornecedor().getNickFornecedor());
+            avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());
+            avaliacaoDTOList.add(avaliacaoDTO);
+        }
+        responseList.setAvaliacoes(avaliacaoDTOList);
+    }
+
+    private void checkCamposAndUpdate(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
         if (!ObjectUtils.isEmpty(request.getNome())) {
             fornecedor.setNomeFornecedor(request.getNome());
         }
@@ -105,86 +244,6 @@ public class FornecedorService {
         if (!ObjectUtils.isEmpty(request.getContato().getTelefone())){
             fornecedor.setTelefone(request.getContato().getTelefone());
         }
-
-        this.repository.save(fornecedor);
-        response.setMessage("Usuário atualizado com sucesso!");
-        return response;
-    }
-
-    public void avaliarFornecedor(Long idFornecedor, AvaliacaoRequest request) throws BusinessException {
-        Fornecedor fornecedor = this.repository.findById(idFornecedor).orElseThrow(() -> new BusinessException("Usuário não encontrado."));
-        Avaliacao avaliacao = new Avaliacao();
-        List<Avaliacao> avaliacaoList = new ArrayList<>();
-
-        populaAvaliacao(request, avaliacao);
-        Avaliacao avaliado = avaliacaoRepository.save(avaliacao);
-
-        avaliacaoList.add(avaliado);
-        fornecedor.setAvaliacao(avaliacaoList);
-        fornecedor.setIdFornecedor(idFornecedor);
-
-        this.repository.save(fornecedor);
-    }
-
-    public ResponseMessage atualizarSenha(AtualizarSenhaRequest request) throws BusinessException {
-        ResponseMessage response = new ResponseMessage();
-        Fornecedor fornecedor = this.repository.findByEmail(request.getEmail());
-        if (!ObjectUtils.isEmpty(fornecedor)){
-            if (request.getNovaSenha().equals(fornecedor.getSenha())){
-                throw new BusinessException("Senha igual a anterior.");
-            } else {
-                fornecedor.setSenha(request.getNovaSenha());
-                this.repository.save(fornecedor);
-                response.setMessage("Senha atualizada com sucesso!");
-            }
-        } else {
-            throw new BusinessException("Fornecedor não encontrado.");
-        }
-        return response;
-    }
-
-    public ResponseMessage deletarFornecedor(Long id) {
-        ResponseMessage response = new ResponseMessage();
-        this.repository.deleteById(id);
-        response.setMessage("Fornecedor deletado com sucesso.");
-        return response;
-    }
-
-    private void populaFornecedor(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
-        fornecedor.setTipoUsuarioEnum(TipoUsuarioEnum.FORNECEDOR);
-        fornecedor.setNickFornecedor(validaNickname(request));
-        fornecedor.setCnpj(!ObjectUtils.isEmpty(request.getCnpj())? request.getCnpj() : "");
-        fornecedor.setNomeFornecedor(request.getNome());
-        fornecedor.setDescricaoFornecedor(!ObjectUtils.isEmpty(request.getDescricao())? request.getDescricao() : "");
-        fornecedor.setEmail(validaEmail(request));
-        fornecedor.setSenha(request.getSenha());
-    }
-
-    private void populaEndereco(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
-        buscarCamposByCep(request, fornecedor);
-        fornecedor.setComplemento(!ObjectUtils.isEmpty(request.getEndereco().getComplemento()) ? request.getEndereco().getComplemento() : "");
-        fornecedor.setNumero(!ObjectUtils.isEmpty(request.getEndereco().getNumero()) ? request.getEndereco().getNumero() : "");
-        fornecedor.setPais(!ObjectUtils.isEmpty(request.getEndereco().getPais()) ? request.getEndereco().getPais() : "");
-    }
-
-    private void populaContato(FornecedorRequest request, Fornecedor fornecedor) {
-        fornecedor.setWhatsapp(Optional.ofNullable(request.getContato().getWhatsapp()).orElse(""));
-        fornecedor.setSite(Optional.ofNullable(request.getContato().getSite()).orElse(""));
-        fornecedor.setInstagram(Optional.ofNullable(request.getContato().getInstagram()).orElse(""));
-        fornecedor.setEmailContato(Optional.ofNullable(request.getContato().getEmailContato()).orElse(""));
-        fornecedor.setTelefone(Optional.ofNullable(request.getContato().getTelefone()).orElse(""));
-    }
-
-    private void populaSubSegmento(FornecedorRequest request, Fornecedor fornecedorSalvo) {
-        fornecedorSalvo.setSubSegmento(subSegmentoService.adicionarSubSegmento(request.getIdSubSegmento()));
-    }
-
-    private void populaAvaliacao(AvaliacaoRequest request, Avaliacao avaliacao) {
-        avaliacao.setIdAvaliador(request.getIdUsuario());
-        avaliacao.setAtendimento(request.getAtendimento());
-        avaliacao.setConfiabilidade(request.getConfiabilidade());
-        avaliacao.setPrecos(request.getPrecos());
-        avaliacao.setQualidadeProduto(request.getQualidadeProduto());
     }
 
     private String validaEmail(FornecedorRequest request) throws BusinessException {

@@ -1,0 +1,416 @@
+{
+	"info": {
+		"_postman_id": "b9a4e4cb-45cd-4eb6-91b3-60173701890c",
+		"name": "MeuFornecedor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Buscar usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeUsuario\": \"Usuario Teste 1\",\r\n    \"nickname\": \"UsuarioTeste1\",\r\n    \"telefone\": \"994238865\",\r\n    \"email\": \"teste1@teste.com.br\",\r\n    \"senha\": \"123123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar usuário",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeUsuario\": \"Alek Fumasa\",\r\n    \"telefone\": \"994238864\",\r\n    \"email\": \"alekfumasa@tchurusbango.com.br\",\r\n    \"nickname\": \"Aleks\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario?id",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Senha",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"novaSenha\": \"1231231234\",\r\n    \"email\": \"emilygugua@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/senha",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"senha"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Avaliar Fornecedor",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUsuario\": \"38\",\r\n    \"atendimento\": \"5\",\r\n    \"precos\": \"5\",\r\n    \"confiabilidade\": \"5\",\r\n    \"qualidadeProduto\": \"5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/avaliacao/43",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"avaliacao",
+								"43"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fornecedor",
+			"item": [
+				{
+					"name": "Buscar fornecedor",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/fornecedor",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fornecedor"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar fornecedor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\": \"Teste1\",\r\n    \"cnpj\": \"00010010001\",\r\n    \"nome\": \"Usuario Teste 1\",\r\n    \"descricao\": \"Um novo Fornecedor Teste\",\r\n    \"email\": \"teste1@dmail.com\",\r\n    \"senha\": \"123123123\",\r\n    \"idSubSegmento\": \"2\",\r\n    \"endereco\": {\r\n        \"pais\": \"Brasil\",\r\n        \"cep\": \"91787170\",\r\n        \"numero\": \"113\",\r\n        \"complemento\": \"Rua a\"\r\n    },\r\n    \"contato\": {\r\n        \"whatsapp\": \"51983013198\",\r\n        \"site\": \"www.teste.com.br\",\r\n        \"instagram\": \"@teste\",\r\n        \"emailContato\": \"teste@gmail.com\",\r\n        \"telefone\": \"51983013198\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/fornecedor",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fornecedor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Fornecedor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/fornecedor/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fornecedor",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Fornecedor",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\": \"Teste2\",\r\n    \"cnpj\": \"00010010001\",\r\n    \"nome\": \"Teste2\",\r\n    \"descricao\": \"Uma nova Fornecedora\",\r\n    \"email\": \"teste2@gmail.com\",\r\n    \"endereco\": {\r\n        \"pais\": \"Brasil\",\r\n        \"cep\": \"91787170\",\r\n        \"numero\": \"113\",\r\n        \"complemento\": \"Rua a\"\r\n    },\r\n    \"contato\": {\r\n        \"whatsapp\": \"51983013198\",\r\n        \"site\": \"www.teste.com.br\",\r\n        \"instagram\": \"@teste\",\r\n        \"emailContato\": \"teste@gmail.com\",\r\n        \"telefone\": \"51983013198\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/fornecedor/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fornecedor",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Senha",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"novaSenha\": \"1231231234\",\r\n    \"email\": \"emilygugua@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/fornecedor/senha",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fornecedor",
+								"senha"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Segmento",
+			"item": [
+				{
+					"name": "Criar Segmento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeSegmento\": \"Moda\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/segmento",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"segmento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Segmento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SubSegmento",
+			"item": [
+				{
+					"name": "Criar SubSegmento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeSubSegmento\": \"Moda Infantil\",\r\n    \"idSegmento\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/subsegmento",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subsegmento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar SubSegmento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/subsegmento?id",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subsegmento"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

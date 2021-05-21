@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,7 +25,6 @@ public class Segmento implements Serializable {
     @Column(name = "NOME_SEGMENTO")
     private String nomeSegmento;
 
-    @Column(name = "ID_SUB_SEGMENTO")
-    private Long idSubSegmento;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "segmento")
+    private List<SubSegmento> subSegmentos;
 }

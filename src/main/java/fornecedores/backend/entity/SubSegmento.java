@@ -2,17 +2,19 @@ package fornecedores.backend.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "TB_SUB_SEGMENTO")
 public class SubSegmento implements Serializable {
-
 
     private static final long seriaVersionUID = 1L;
 
@@ -25,9 +27,9 @@ public class SubSegmento implements Serializable {
     @Column(name = "NOME_SUB_SEGMENTO")
     private String nomeSubSegmento;
 
-    @Column(name = "ID_SEGMENTO")
-    private Long idSegmento;
+    @ManyToOne
+    private Segmento segmento;
 
-    @Column(name = "ID_FORNECEDOR")
-    private Long idFornecedor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "subSegmento")
+    private List<Fornecedor> fornecedor;
 }

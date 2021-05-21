@@ -1,5 +1,6 @@
 package fornecedores.backend.controller;
 
+import fornecedores.backend.dto.UsuarioDTO;
 import fornecedores.backend.dto.request.AtualizarSenhaRequest;
 import fornecedores.backend.dto.request.AvaliacaoRequest;
 import fornecedores.backend.dto.request.UsuarioRequest;
@@ -20,7 +21,7 @@ public class UsuarioController {
     private final UsuarioService service;
 
     @GetMapping
-    public List<Usuario> listarUsuario(@RequestParam(required = false) Long id) {
+    public List<UsuarioDTO> listarUsuario(@RequestParam(required = false) Long id) {
         return this.service.listarUsuario(id);
     }
 
@@ -39,9 +40,9 @@ public class UsuarioController {
         return this.service.atualizarUsuario(id, request);
     }
 
-    @PutMapping("/avaliacao/{id}")
-    public ResponseMessage avaliarFornecedor(@PathVariable Long idFornecedor, @RequestBody AvaliacaoRequest request) throws BusinessException {
-        return this.service.avaliarFornecedor(idFornecedor, request);
+    @PostMapping("/avaliacao")
+    public ResponseMessage avaliarFornecedor(@RequestBody AvaliacaoRequest request) throws BusinessException {
+        return this.service.avaliarFornecedor(request);
     }
 
     @PutMapping("/senha")

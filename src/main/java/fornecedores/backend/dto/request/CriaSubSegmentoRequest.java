@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SubSegmentoRequest {
+public class CriaSubSegmentoRequest {
 
     private String nomeSubSegmento;
     private String idSegmento;

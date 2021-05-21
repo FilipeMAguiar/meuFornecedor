@@ -16,5 +16,5 @@ public class FornecedorRequest {
     private String senha;
     private EnderecoDTO endereco;
     private ContatoDTO contato;
-    private Long idSubSegmento;
+    private String idSubSegmento;
 }
