@@ -1,21 +1,17 @@
 package fornecedores.backend.service;
 
 import fornecedores.backend.domain.TipoUsuarioEnum;
+import fornecedores.backend.dto.AvaliacaoDTO;
 import fornecedores.backend.dto.BuscaCepDTO;
 import fornecedores.backend.dto.request.AtualizarSenhaRequest;
 import fornecedores.backend.dto.request.AvaliacaoRequest;
 import fornecedores.backend.dto.request.FornecedorRequest;
+import fornecedores.backend.dto.response.FornecedorDTO;
 import fornecedores.backend.dto.response.FornecedorResponseDTO;
 import fornecedores.backend.dto.response.ResponseMessage;
-import fornecedores.backend.entity.Avaliacao;
-import fornecedores.backend.entity.Fornecedor;
-import fornecedores.backend.entity.SubSegmento;
-import fornecedores.backend.entity.Usuario;
+import fornecedores.backend.entity.*;
 import fornecedores.backend.exception.BusinessException;
-import fornecedores.backend.repository.AvaliacaoRepository;
-import fornecedores.backend.repository.FornecedorRepository;
-import fornecedores.backend.repository.SubSegmentoRepository;
-import fornecedores.backend.repository.UsuarioRepository;
+import fornecedores.backend.repository.*;
 import fornecedores.backend.util.JsonUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,9 +60,6 @@ public class FornecedorService {
         populaContato(request, fornecedor);
 
         this.repository.save(fornecedor);
-        //List<SubSegmento> subSegmentoList = this.subSegmentoService.adicionaFornecedorAoSubSegmento(fornecedorSalvo, request);
-        //fornecedorSalvo.setSubSegmentos(subSegmentoList);
-        //this.repository.save(fornecedorSalvo);
 
         response.setMessage("Fornecedor " + request.getNome() + " com o id " + fornecedor.getIdFornecedor() + " criado com sucesso!");
         return response;
@@ -118,7 +111,6 @@ public class FornecedorService {
     }
 
     private void populaFornecedor(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
-        List<SubSegmento> subSegmentoList = new ArrayList<>();
         fornecedor.setTipoUsuarioEnum(TipoUsuarioEnum.FORNECEDOR);
         fornecedor.setNickFornecedor(validaNickname(request));
         fornecedor.setCnpj(!ObjectUtils.isEmpty(request.getCnpj())? request.getCnpj() : "");
@@ -126,11 +118,8 @@ public class FornecedorService {
         fornecedor.setDescricaoFornecedor(!ObjectUtils.isEmpty(request.getDescricao())? request.getDescricao() : "");
         fornecedor.setEmail(validaEmail(request));
         fornecedor.setSenha(request.getSenha());
-        for (String idSubsegmento: request.getSubSegmentoList().getIdSubSegmento()) {
-            SubSegmento subSegmento = subSegmentoRepository.findById(Long.valueOf(idSubsegmento)).orElse(null);
-            subSegmentoList.add(subSegmento);
-        }
-        fornecedor.setSubSegmentos(subSegmentoList);
+        SubSegmento subSegmento = subSegmentoRepository.findById(Long.valueOf(request.getIdSubSegmento())).get();
+        fornecedor.setSubSegmento(subSegmento);
     }
 
     private void populaEndereco(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
@@ -148,24 +137,25 @@ public class FornecedorService {
         fornecedor.setTelefone(Optional.ofNullable(request.getContato().getTelefone()).orElse(""));
     }
 
-    private void populaFornecedorId(Long id, List<FornecedorResponseDTO> response, FornecedorResponseDTO responseDTO) {
+    private void populaFornecedorId(Long id, List<FornecedorResponseDTO> response, FornecedorResponseDTO responseList) {
         Fornecedor fornecedor = this.repository.findById(id).get();
-        responseDTO.setIdFornecedor(id.toString());
-        responseDTO.setNickFornecedor(fornecedor.getNickFornecedor());
-        responseDTO.setNomeFornecedor(fornecedor.getNomeFornecedor());
-        responseDTO.setEmailContato(fornecedor.getEmailContato());
-        responseDTO.setPais(fornecedor.getPais());
-        response.add(responseDTO);
+        responseList.setIdFornecedor(id.toString());
+        responseList.setNickFornecedor(fornecedor.getNickFornecedor());
+        responseList.setNomeFornecedor(fornecedor.getNomeFornecedor());
+        responseList.setEmailContato(fornecedor.getEmailContato());
+        responseList.setPais(fornecedor.getPais());
+        buildAvaliacaoId(responseList, fornecedor);
+        response.add(responseList);
     }
 
-
-    private void populaFornecedores(List<FornecedorResponseDTO> responseDTOList, Fornecedor f) {
+    static void populaFornecedores(List<FornecedorResponseDTO> responseDTOList, Fornecedor f) {
         FornecedorResponseDTO responseList = new FornecedorResponseDTO();
         responseList.setIdFornecedor(f.getIdFornecedor().toString());
         responseList.setNickFornecedor(f.getNickFornecedor());
         responseList.setNomeFornecedor(f.getNomeFornecedor());
         responseList.setEmailContato(f.getEmailContato());
         responseList.setPais(f.getPais());
+        buildAvaliacao(f, responseList);
         responseDTOList.add(responseList);
     }
 
@@ -176,7 +166,39 @@ public class FornecedorService {
         avaliacao.setConfiabilidade(Long.valueOf(request.getConfiabilidade()));
         avaliacao.setPrecos(Long.valueOf(request.getPrecos()));
         avaliacao.setQualidadeProduto(Long.valueOf(request.getQualidadeProduto()));
-        //avaliacao.setIdFornecedor(Long.valueOf(request.getIdFornecedor()));
+        Fornecedor fornecedor = this.repository.findById(Long.valueOf(request.getIdFornecedor())).orElse(null);
+        avaliacao.setFornecedor(fornecedor);
+    }
+
+    private void buildAvaliacaoId(FornecedorResponseDTO responseList, Fornecedor fornecedor) {
+        List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
+        for (Avaliacao av : fornecedor.getAvaliacao()) {
+            AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
+            avaliacaoDTO.setAtendimento(av.getAtendimento());
+            avaliacaoDTO.setConfiabilidade(av.getConfiabilidade());
+            avaliacaoDTO.setPrecos(av.getPrecos());
+            avaliacaoDTO.setQualidadeProduto(av.getQualidadeProduto());
+            avaliacaoDTO.setIdAvaliacao(av.getIdAvaliacao());
+            avaliacaoDTO.setNickFornecedor(av.getFornecedor().getNickFornecedor());
+            avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());
+        }
+        responseList.setAvaliacoes(avaliacaoDTOList);
+    }
+
+    private static void buildAvaliacao(Fornecedor f, FornecedorResponseDTO responseList) {
+        List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
+        for (Avaliacao av : f.getAvaliacao()) {
+            AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
+            avaliacaoDTO.setAtendimento(av.getAtendimento());
+            avaliacaoDTO.setConfiabilidade(av.getConfiabilidade());
+            avaliacaoDTO.setPrecos(av.getPrecos());
+            avaliacaoDTO.setQualidadeProduto(av.getQualidadeProduto());
+            avaliacaoDTO.setIdAvaliacao(av.getIdAvaliacao());
+            avaliacaoDTO.setNickFornecedor(av.getFornecedor().getNickFornecedor());
+            avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());
+            avaliacaoDTOList.add(avaliacaoDTO);
+        }
+        responseList.setAvaliacoes(avaliacaoDTOList);
     }
 
     private void checkCamposAndUpdate(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {

@@ -48,5 +48,4 @@ public class Usuario implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private List<Avaliacao> avaliacoes;
-
 }

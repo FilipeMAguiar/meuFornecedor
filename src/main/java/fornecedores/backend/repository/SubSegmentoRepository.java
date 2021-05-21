@@ -8,6 +8,4 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface SubSegmentoRepository extends JpaRepository<SubSegmento, Long> {
-    //@Query(value = "insert into SubSegmento values (:idSubSegmento, :nomeSubSegmento, :idFornecedor, :idSubSegmento)")
-    //void adicionarFornecedorAoSubSegmento(@Param("idSubSegmento") Long idSubsegmento, @Param("nomeSubSegmento") String nomeSubSegmento, @Param("idFornecedor") Long idFornecedor, @Param("idSubSegmento") Long idSegmento);
 }

@@ -7,14 +7,9 @@ import lombok.Setter;
 @Setter
 public class AvaliacaoRequest {
     private String idFornecedor;
-
     private String idUsuario;
-
     private String atendimento;
-
     private String precos;
-
     private String confiabilidade;
-
     private String qualidadeProduto;
 }

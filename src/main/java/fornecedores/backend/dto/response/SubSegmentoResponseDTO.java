@@ -14,5 +14,5 @@ public class SubSegmentoResponseDTO {
     private Long idSubSegmento;
     private String nomeSubSegmento;
     private String nomeSegmento;
-    private List<FornecedorResponseDTO> fornecedores;
+    private List<FornecedorDTO> fornecedores;
 }

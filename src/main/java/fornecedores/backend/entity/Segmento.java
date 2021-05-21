@@ -27,5 +27,4 @@ public class Segmento implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "segmento")
     private List<SubSegmento> subSegmentos;
-
 }

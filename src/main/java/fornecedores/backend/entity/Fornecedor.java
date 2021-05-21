@@ -3,6 +3,7 @@ package fornecedores.backend.entity;
 import fornecedores.backend.domain.TipoUsuarioEnum;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -106,11 +107,7 @@ public class Fornecedor implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedor")
     private List<Avaliacao> avaliacao;
 
-    /*
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedor")
-    private List<SubSegmento> subSegmentos;
-     */
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinTable(name = "FORNECEDOR_SUBSEGMENTO", joinColumns = @JoinColumn(name = "ID_FORNECEDOR"), inverseJoinColumns = @JoinColumn(name = "ID_SUB_SEGMENTO"))
-    private List<SubSegmento> subSegmentos;
+    @ManyToOne
+    private SubSegmento subSegmento;
+
 }

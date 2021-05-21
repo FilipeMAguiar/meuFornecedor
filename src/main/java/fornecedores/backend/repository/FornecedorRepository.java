@@ -12,8 +12,4 @@ import java.util.List;
 public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
     Fornecedor findByNickFornecedor(String nickname);
     Fornecedor findByEmail(String email);
-
-    @Modifying(clearAutomatically = true)
-    @Query("update Fornecedor fornecedor set fornecedor.subSegmentos =:subSegmentos where fornecedor.idFornecedor =:idFornecedor")
-    void update(@Param("idFornecedor") Long idFornecedor, @Param("subSegmentos") SubSegmento subSegmento);
 }
