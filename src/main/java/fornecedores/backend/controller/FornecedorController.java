@@ -2,8 +2,8 @@ package fornecedores.backend.controller;
 
 import fornecedores.backend.dto.request.AtualizarSenhaRequest;
 import fornecedores.backend.dto.request.FornecedorRequest;
+import fornecedores.backend.dto.response.FornecedorResponseDTO;
 import fornecedores.backend.dto.response.ResponseMessage;
-import fornecedores.backend.entity.Fornecedor;
 import fornecedores.backend.exception.BusinessException;
 import fornecedores.backend.service.FornecedorService;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class FornecedorController {
     private final FornecedorService service;
 
     @GetMapping
-    public List<Fornecedor> listarFornecedor(@RequestParam(required = false) Long id) {
+    public List<FornecedorResponseDTO> listarFornecedor(@RequestParam(required = false) Long id) {
         return this.service.listarFornecedor(id);
     }
 
