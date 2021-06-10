@@ -22,16 +22,16 @@ public class Avaliacao implements Serializable {
     private Long idAvaliacao;
 
     @Column(name = "ATENDIMENTO_AVALIACAO")
-    private Long atendimento;
+    private Integer atendimento;
 
     @Column(name = "PRECO_AVALIACAO")
-    private Long precos;
+    private Integer precos;
 
     @Column(name = "CONFIABILIDADE_AVALIACAO")
-    private Long confiabilidade;
+    private Integer confiabilidade;
 
     @Column(name = "QUALIDADE_AVALIACAO")
-    private Long qualidadeProduto;
+    private Integer qualidadeProduto;
 
     @ManyToOne
     private Fornecedor fornecedor;

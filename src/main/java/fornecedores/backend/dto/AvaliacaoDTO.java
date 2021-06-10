@@ -11,10 +11,10 @@ import lombok.Setter;
 public class AvaliacaoDTO {
 
     private Long idAvaliacao;
-    private Long atendimento;
-    private Long precos;
-    private Long confiabilidade;
-    private Long qualidadeProduto;
+    private Integer atendimento;
+    private Integer precos;
+    private Integer confiabilidade;
+    private Integer qualidadeProduto;
     private String nickFornecedor;
     private Long idUsuario;
 }
