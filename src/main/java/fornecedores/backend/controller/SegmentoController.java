@@ -1,5 +1,6 @@
 package fornecedores.backend.controller;
 
+import fornecedores.backend.dto.SegmentoResponseDTO;
 import fornecedores.backend.dto.request.SegmentoRequest;
 import fornecedores.backend.dto.response.ResponseMessage;
 import fornecedores.backend.entity.Segmento;
@@ -22,7 +23,7 @@ public class SegmentoController {
     }
 
     @GetMapping
-    public List<Segmento> listarSegmentos(@RequestParam(required = false) Long id){
+    public List<SegmentoResponseDTO> listarSegmentos(@RequestParam(required = false) Long id){
         return this.service.listarSegmentos(id);
     }
 }

@@ -104,6 +104,9 @@ public class Fornecedor implements Serializable {
     @Column(name = "EMAIL_CONTATO_FORNECEDOR")
     private String emailContato;
 
+    @Column(name = "NOTA_FORNECEDOR")
+    private Integer nota;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedor")
     private List<Avaliacao> avaliacao;
 

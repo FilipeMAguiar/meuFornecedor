@@ -30,7 +30,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class FornecedorService {
-    
+
     private FornecedorRepository repository;
     private AvaliacaoRepository avaliacaoRepository;
     private UsuarioRepository usuarioRepository;
@@ -162,16 +162,17 @@ public class FornecedorService {
     private void populaAvaliacao(AvaliacaoRequest request, Avaliacao avaliacao) {
         Usuario usuario = usuarioRepository.findById(Long.valueOf(request.getIdUsuario())).get();
         avaliacao.setIdUsuario(usuario);
-        avaliacao.setAtendimento(Long.valueOf(request.getAtendimento()));
-        avaliacao.setConfiabilidade(Long.valueOf(request.getConfiabilidade()));
-        avaliacao.setPrecos(Long.valueOf(request.getPrecos()));
-        avaliacao.setQualidadeProduto(Long.valueOf(request.getQualidadeProduto()));
+        avaliacao.setAtendimento(Integer.valueOf(request.getAtendimento()));
+        avaliacao.setConfiabilidade(Integer.valueOf(request.getConfiabilidade()));
+        avaliacao.setPrecos(Integer.valueOf(request.getPrecos()));
+        avaliacao.setQualidadeProduto(Integer.valueOf(request.getQualidadeProduto()));
         Fornecedor fornecedor = this.repository.findById(Long.valueOf(request.getIdFornecedor())).orElse(null);
         avaliacao.setFornecedor(fornecedor);
     }
 
     private void buildAvaliacaoId(FornecedorResponseDTO responseList, Fornecedor fornecedor) {
         List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
+        fornecedor.setNota(calculaMedia(fornecedor.getAvaliacao()));
         for (Avaliacao av : fornecedor.getAvaliacao()) {
             AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
             avaliacaoDTO.setAtendimento(av.getAtendimento());
@@ -183,6 +184,27 @@ public class FornecedorService {
             avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());
         }
         responseList.setAvaliacoes(avaliacaoDTOList);
+    }
+
+    private Integer calculaMedia(List<Avaliacao> avaliacoes) {
+        List<Integer> medias = new ArrayList<>();
+        int soma = 0;
+        int avaliacoesSize = avaliacoes.size();
+        for (Avaliacao avaliacao: avaliacoes) {
+            Integer atendimento = avaliacao.getAtendimento();
+            Integer confiabilidade = avaliacao.getConfiabilidade();
+            Integer precos = avaliacao.getPrecos();
+            Integer qualidadeProd = avaliacao.getQualidadeProduto();
+
+            int media = (atendimento + confiabilidade + precos + qualidadeProd) / 4;
+            medias.add(media);
+        }
+
+        for (Integer n : medias){
+            soma += n;
+        }
+
+        return soma / avaliacoesSize;
     }
 
     private static void buildAvaliacao(Fornecedor f, FornecedorResponseDTO responseList) {
