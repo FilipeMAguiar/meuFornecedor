@@ -143,7 +143,10 @@ public class FornecedorService {
         responseList.setNickFornecedor(fornecedor.getNickFornecedor());
         responseList.setNomeFornecedor(fornecedor.getNomeFornecedor());
         responseList.setEmailContato(fornecedor.getEmailContato());
-        responseList.setPais(fornecedor.getPais());
+        responseList.setCidade(fornecedor.getCidade());
+        responseList.setNumero(!ObjectUtils.isEmpty(fornecedor.getNumero()) ? fornecedor.getNumero() : "Não informado");
+        responseList.setInstagram(!ObjectUtils.isEmpty(fornecedor.getInstagram()) ? fornecedor.getInstagram() : "Não informado");
+        responseList.setSite(!ObjectUtils.isEmpty(fornecedor.getSite()) ? fornecedor.getSite() : "Não informado");
         buildAvaliacaoId(responseList, fornecedor);
         response.add(responseList);
     }
@@ -154,8 +157,10 @@ public class FornecedorService {
         responseList.setNickFornecedor(f.getNickFornecedor());
         responseList.setNomeFornecedor(f.getNomeFornecedor());
         responseList.setEmailContato(f.getEmailContato());
-        responseList.setPais(f.getPais());
-        buildAvaliacao(f, responseList);
+        responseList.setCidade(f.getCidade());
+        responseList.setNumero(!ObjectUtils.isEmpty(f.getNumero()) ? f.getNumero() : "Não informado");
+        responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "Não informado");
+        responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "Não informado");        buildAvaliacao(f, responseList);
         responseDTOList.add(responseList);
     }
 

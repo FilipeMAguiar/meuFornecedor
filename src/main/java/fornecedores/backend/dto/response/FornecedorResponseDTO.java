@@ -15,6 +15,9 @@ public class FornecedorResponseDTO {
     private String nickFornecedor;
     private String nomeFornecedor;
     private String emailContato;
-    private String pais;
+    private String cidade;
+    private String numero;
+    private String instagram;
+    private String site;
     private List<AvaliacaoDTO> avaliacoes;
 }
