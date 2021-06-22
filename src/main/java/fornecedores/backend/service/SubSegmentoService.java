@@ -84,8 +84,14 @@ public class SubSegmentoService {
         responseList.setIdFornecedor(f.getIdFornecedor().toString());
         responseList.setNickFornecedor(f.getNickFornecedor());
         responseList.setNomeFornecedor(f.getNomeFornecedor());
+        responseList.setDescricao(f.getDescricaoFornecedor());
+        responseList.setCnpj(!ObjectUtils.isEmpty(f.getCnpj()) ?  f.getCnpj() : "00.000.000/0000-00");
         responseList.setEmailContato(f.getEmailContato());
-        responseList.setPais(f.getPais());
+        responseList.setCidade(f.getCidade());
+        responseList.setNumero(f.getNumero());
+        responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "@meuFornecedor");
+        responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "www.meuFornecedor.com.br");
+        responseList.setNota(!ObjectUtils.isEmpty(f.getNota()) ? f.getNota() : 5);
         responseDTOList.add(responseList);
     }
 }
