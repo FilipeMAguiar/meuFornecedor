@@ -1,5 +1,6 @@
 package fornecedores.backend.service;
 
+import fornecedores.backend.dto.SubSegmentoDTO;
 import fornecedores.backend.dto.request.CriaSubSegmentoRequest;
 import fornecedores.backend.dto.request.FornecedorRequest;
 import fornecedores.backend.dto.response.FornecedorDTO;
@@ -18,6 +19,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
@@ -48,8 +50,12 @@ public class SubSegmentoService {
         } else {
             List<SubSegmento> subSegmentoList = repository.findAll();
             for (SubSegmento subSegmento : subSegmentoList) {
-                buildSubSegmento(subSegmento.getIdSubSegmento(), buildResponse);
-                buildFornecedor(responseDTOList, buildResponse, subSegmento);
+                SubSegmentoResponseDTO subSegmentos = new SubSegmentoResponseDTO();
+                subSegmentos.setIdSegmento(subSegmento.getSegmento().getIdSegmento().toString());
+                subSegmentos.setIdSubSegmento(subSegmento.getIdSubSegmento());
+                subSegmentos.setNomeSubSegmento(subSegmento.getNomeSubSegmento());
+                subSegmentos.setNomeSegmento(subSegmento.getSegmento().getNomeSegmento());
+                buildFornecedor(responseDTOList, subSegmentos, subSegmento);
             }
             return responseDTOList;
         }
@@ -62,7 +68,7 @@ public class SubSegmentoService {
             buildFornecedorSimples(fornecedorResponseList, f);
         }
         buildResponse.setFornecedores(fornecedorResponseList);
-        responseDTOList.add(buildResponse);
+            responseDTOList.add(buildResponse);
     }
 
     private SubSegmento buildSubSegmento(Long id, SubSegmentoResponseDTO buildResponse) {
@@ -79,8 +85,14 @@ public class SubSegmentoService {
         responseList.setIdFornecedor(f.getIdFornecedor().toString());
         responseList.setNickFornecedor(f.getNickFornecedor());
         responseList.setNomeFornecedor(f.getNomeFornecedor());
+        responseList.setDescricao(f.getDescricaoFornecedor());
+        responseList.setCnpj(!ObjectUtils.isEmpty(f.getCnpj()) ?  f.getCnpj() : "00.000.000/0000-00");
         responseList.setEmailContato(f.getEmailContato());
-        responseList.setPais(f.getPais());
+        responseList.setCidade(f.getCidade());
+        responseList.setNumero(f.getTelefone());
+        responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "@meuFornecedor");
+        responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "www.meuFornecedor.com.br");
+        responseList.setNota(new Random().nextInt(6));
         responseDTOList.add(responseList);
     }
 }
