@@ -229,7 +229,11 @@ public class FornecedorService {
             soma += n;
         }
 
-        return soma / avaliacoesSize;
+        if (avaliacoesSize == 0) {
+            return 0;
+        } else {
+            return soma / avaliacoesSize;
+        }
     }
 
     private void checkCamposAndUpdate(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
