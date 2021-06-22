@@ -88,7 +88,7 @@ public class SubSegmentoService {
         responseList.setCnpj(!ObjectUtils.isEmpty(f.getCnpj()) ?  f.getCnpj() : "00.000.000/0000-00");
         responseList.setEmailContato(f.getEmailContato());
         responseList.setCidade(f.getCidade());
-        responseList.setNumero(f.getNumero());
+        responseList.setNumero(f.getTelefone());
         responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "@meuFornecedor");
         responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "www.meuFornecedor.com.br");
         responseList.setNota(!ObjectUtils.isEmpty(f.getNota()) ? f.getNota() : 5);
