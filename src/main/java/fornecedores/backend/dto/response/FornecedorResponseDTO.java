@@ -20,4 +20,5 @@ public class FornecedorResponseDTO {
     private String instagram;
     private String site;
     private List<AvaliacaoDTO> avaliacoes;
+    private String nota;
 }

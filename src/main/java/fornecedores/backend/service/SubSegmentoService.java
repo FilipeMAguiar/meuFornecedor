@@ -1,5 +1,6 @@
 package fornecedores.backend.service;
 
+import fornecedores.backend.dto.SubSegmentoDTO;
 import fornecedores.backend.dto.request.CriaSubSegmentoRequest;
 import fornecedores.backend.dto.request.FornecedorRequest;
 import fornecedores.backend.dto.response.FornecedorDTO;
@@ -48,8 +49,12 @@ public class SubSegmentoService {
         } else {
             List<SubSegmento> subSegmentoList = repository.findAll();
             for (SubSegmento subSegmento : subSegmentoList) {
-                buildSubSegmento(subSegmento.getIdSubSegmento(), buildResponse);
-                buildFornecedor(responseDTOList, buildResponse, subSegmento);
+                SubSegmentoResponseDTO subSegmentos = new SubSegmentoResponseDTO();
+                subSegmentos.setIdSegmento(subSegmento.getSegmento().getIdSegmento().toString());
+                subSegmentos.setIdSubSegmento(subSegmento.getIdSubSegmento());
+                subSegmentos.setNomeSubSegmento(subSegmento.getNomeSubSegmento());
+                subSegmentos.setNomeSegmento(subSegmento.getSegmento().getNomeSegmento());
+                buildFornecedor(responseDTOList, subSegmentos, subSegmento);
             }
             return responseDTOList;
         }
@@ -62,7 +67,7 @@ public class SubSegmentoService {
             buildFornecedorSimples(fornecedorResponseList, f);
         }
         buildResponse.setFornecedores(fornecedorResponseList);
-        responseDTOList.add(buildResponse);
+            responseDTOList.add(buildResponse);
     }
 
     private SubSegmento buildSubSegmento(Long id, SubSegmentoResponseDTO buildResponse) {

@@ -148,10 +148,11 @@ public class FornecedorService {
         responseList.setInstagram(!ObjectUtils.isEmpty(fornecedor.getInstagram()) ? fornecedor.getInstagram() : "Não informado");
         responseList.setSite(!ObjectUtils.isEmpty(fornecedor.getSite()) ? fornecedor.getSite() : "Não informado");
         buildAvaliacaoId(responseList, fornecedor);
+        responseList.setNota(fornecedor.getNota().toString());
         response.add(responseList);
     }
 
-    static void populaFornecedores(List<FornecedorResponseDTO> responseDTOList, Fornecedor f) {
+    private void populaFornecedores(List<FornecedorResponseDTO> responseDTOList, Fornecedor f) {
         FornecedorResponseDTO responseList = new FornecedorResponseDTO();
         responseList.setIdFornecedor(f.getIdFornecedor().toString());
         responseList.setNickFornecedor(f.getNickFornecedor());
@@ -160,7 +161,9 @@ public class FornecedorService {
         responseList.setCidade(f.getCidade());
         responseList.setNumero(!ObjectUtils.isEmpty(f.getNumero()) ? f.getNumero() : "Não informado");
         responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "Não informado");
-        responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "Não informado");        buildAvaliacao(f, responseList);
+        responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "Não informado");
+        buildAvaliacao(f, responseList);
+        responseList.setNota(f.getNota().toString());
         responseDTOList.add(responseList);
     }
 
@@ -191,6 +194,23 @@ public class FornecedorService {
         responseList.setAvaliacoes(avaliacaoDTOList);
     }
 
+    private void buildAvaliacao(Fornecedor f, FornecedorResponseDTO responseList) {
+        List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
+        f.setNota(calculaMedia(f.getAvaliacao()));
+        for (Avaliacao av : f.getAvaliacao()) {
+            AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
+            avaliacaoDTO.setAtendimento(av.getAtendimento());
+            avaliacaoDTO.setConfiabilidade(av.getConfiabilidade());
+            avaliacaoDTO.setPrecos(av.getPrecos());
+            avaliacaoDTO.setQualidadeProduto(av.getQualidadeProduto());
+            avaliacaoDTO.setIdAvaliacao(av.getIdAvaliacao());
+            avaliacaoDTO.setNickFornecedor(av.getFornecedor().getNickFornecedor());
+            avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());
+            avaliacaoDTOList.add(avaliacaoDTO);
+        }
+        responseList.setAvaliacoes(avaliacaoDTOList);
+    }
+
     private Integer calculaMedia(List<Avaliacao> avaliacoes) {
         List<Integer> medias = new ArrayList<>();
         int soma = 0;
@@ -210,22 +230,6 @@ public class FornecedorService {
         }
 
         return soma / avaliacoesSize;
-    }
-
-    private static void buildAvaliacao(Fornecedor f, FornecedorResponseDTO responseList) {
-        List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
-        for (Avaliacao av : f.getAvaliacao()) {
-            AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
-            avaliacaoDTO.setAtendimento(av.getAtendimento());
-            avaliacaoDTO.setConfiabilidade(av.getConfiabilidade());
-            avaliacaoDTO.setPrecos(av.getPrecos());
-            avaliacaoDTO.setQualidadeProduto(av.getQualidadeProduto());
-            avaliacaoDTO.setIdAvaliacao(av.getIdAvaliacao());
-            avaliacaoDTO.setNickFornecedor(av.getFornecedor().getNickFornecedor());
-            avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());
-            avaliacaoDTOList.add(avaliacaoDTO);
-        }
-        responseList.setAvaliacoes(avaliacaoDTOList);
     }
 
     private void checkCamposAndUpdate(FornecedorRequest request, Fornecedor fornecedor) throws BusinessException {
