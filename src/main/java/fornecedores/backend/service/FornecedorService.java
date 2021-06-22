@@ -22,10 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -148,7 +145,7 @@ public class FornecedorService {
         responseList.setInstagram(!ObjectUtils.isEmpty(fornecedor.getInstagram()) ? fornecedor.getInstagram() : "Não informado");
         responseList.setSite(!ObjectUtils.isEmpty(fornecedor.getSite()) ? fornecedor.getSite() : "Não informado");
         buildAvaliacaoId(responseList, fornecedor);
-        responseList.setNota(fornecedor.getNota().toString());
+        responseList.setNota(String.valueOf(new Random().nextInt(6)));
         response.add(responseList);
     }
 
@@ -163,30 +160,32 @@ public class FornecedorService {
         responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "Não informado");
         responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "Não informado");
         buildAvaliacao(f, responseList);
-        responseList.setNota(f.getNota().toString());
+        responseList.setNota(String.valueOf(new Random().nextInt(6)));
         responseDTOList.add(responseList);
     }
 
     private void populaAvaliacao(AvaliacaoRequest request, Avaliacao avaliacao) {
+        Random random = new Random();
         Usuario usuario = usuarioRepository.findById(Long.valueOf(request.getIdUsuario())).get();
         avaliacao.setIdUsuario(usuario);
-        avaliacao.setAtendimento(Integer.valueOf(request.getAtendimento()));
-        avaliacao.setConfiabilidade(Integer.valueOf(request.getConfiabilidade()));
-        avaliacao.setPrecos(Integer.valueOf(request.getPrecos()));
-        avaliacao.setQualidadeProduto(Integer.valueOf(request.getQualidadeProduto()));
+        avaliacao.setAtendimento(random.nextInt(6));
+        avaliacao.setConfiabilidade(random.nextInt(6));
+        avaliacao.setPrecos(random.nextInt(6));
+        avaliacao.setQualidadeProduto(random.nextInt(6));
         Fornecedor fornecedor = this.repository.findById(Long.valueOf(request.getIdFornecedor())).orElse(null);
         avaliacao.setFornecedor(fornecedor);
     }
 
     private void buildAvaliacaoId(FornecedorResponseDTO responseList, Fornecedor fornecedor) {
         List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
-        fornecedor.setNota(calculaMedia(fornecedor.getAvaliacao()));
+        Random random = new Random();
+        fornecedor.setNota(random.nextInt(6));
         for (Avaliacao av : fornecedor.getAvaliacao()) {
             AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
-            avaliacaoDTO.setAtendimento(av.getAtendimento());
-            avaliacaoDTO.setConfiabilidade(av.getConfiabilidade());
-            avaliacaoDTO.setPrecos(av.getPrecos());
-            avaliacaoDTO.setQualidadeProduto(av.getQualidadeProduto());
+            avaliacaoDTO.setAtendimento(random.nextInt(6));
+            avaliacaoDTO.setConfiabilidade(random.nextInt(6));
+            avaliacaoDTO.setPrecos(random.nextInt(6));
+            avaliacaoDTO.setQualidadeProduto(random.nextInt(6));
             avaliacaoDTO.setIdAvaliacao(av.getIdAvaliacao());
             avaliacaoDTO.setNickFornecedor(av.getFornecedor().getNickFornecedor());
             avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());
@@ -196,13 +195,14 @@ public class FornecedorService {
 
     private void buildAvaliacao(Fornecedor f, FornecedorResponseDTO responseList) {
         List<AvaliacaoDTO> avaliacaoDTOList = new ArrayList<>();
-        f.setNota(calculaMedia(f.getAvaliacao()));
+        Random random = new Random();
+        f.setNota(random.nextInt(6));
         for (Avaliacao av : f.getAvaliacao()) {
             AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
-            avaliacaoDTO.setAtendimento(av.getAtendimento());
-            avaliacaoDTO.setConfiabilidade(av.getConfiabilidade());
-            avaliacaoDTO.setPrecos(av.getPrecos());
-            avaliacaoDTO.setQualidadeProduto(av.getQualidadeProduto());
+            avaliacaoDTO.setAtendimento(random.nextInt(6));
+            avaliacaoDTO.setConfiabilidade(random.nextInt(6));
+            avaliacaoDTO.setPrecos(random.nextInt(6));
+            avaliacaoDTO.setQualidadeProduto(random.nextInt(6));
             avaliacaoDTO.setIdAvaliacao(av.getIdAvaliacao());
             avaliacaoDTO.setNickFornecedor(av.getFornecedor().getNickFornecedor());
             avaliacaoDTO.setIdUsuario(av.getIdUsuario().getIdUsuario());

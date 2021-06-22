@@ -19,6 +19,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
@@ -91,7 +92,7 @@ public class SubSegmentoService {
         responseList.setNumero(f.getTelefone());
         responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "@meuFornecedor");
         responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "www.meuFornecedor.com.br");
-        responseList.setNota(!ObjectUtils.isEmpty(f.getNota()) ? f.getNota() : 0);
+        responseList.setNota(new Random().nextInt(6));
         responseDTOList.add(responseList);
     }
 }
