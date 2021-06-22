@@ -91,7 +91,7 @@ public class SubSegmentoService {
         responseList.setNumero(f.getTelefone());
         responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "@meuFornecedor");
         responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "www.meuFornecedor.com.br");
-        responseList.setNota(f.getNota());
+        responseList.setNota(!ObjectUtils.isEmpty(f.getNota()) ? f.getNota() : 0);
         responseDTOList.add(responseList);
     }
 }
