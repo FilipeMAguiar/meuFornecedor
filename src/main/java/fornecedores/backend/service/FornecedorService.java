@@ -144,6 +144,7 @@ public class FornecedorService {
         responseList.setNumero(!ObjectUtils.isEmpty(fornecedor.getNumero()) ? fornecedor.getNumero() : "Não informado");
         responseList.setInstagram(!ObjectUtils.isEmpty(fornecedor.getInstagram()) ? fornecedor.getInstagram() : "Não informado");
         responseList.setSite(!ObjectUtils.isEmpty(fornecedor.getSite()) ? fornecedor.getSite() : "Não informado");
+        responseList.setIdSubSegmento(String.valueOf(fornecedor.getSubSegmento().getIdSubSegmento()));
         buildAvaliacaoId(responseList, fornecedor);
         responseList.setNota(String.valueOf(new Random().nextInt(6)));
         response.add(responseList);
@@ -159,6 +160,7 @@ public class FornecedorService {
         responseList.setNumero(!ObjectUtils.isEmpty(f.getNumero()) ? f.getNumero() : "Não informado");
         responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "Não informado");
         responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "Não informado");
+        responseList.setIdSubSegmento(String.valueOf(f.getSubSegmento().getIdSubSegmento()));
         buildAvaliacao(f, responseList);
         responseList.setNota(String.valueOf(new Random().nextInt(6)));
         responseDTOList.add(responseList);

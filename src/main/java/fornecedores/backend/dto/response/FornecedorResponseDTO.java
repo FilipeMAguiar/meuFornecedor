@@ -21,4 +21,5 @@ public class FornecedorResponseDTO {
     private String site;
     private List<AvaliacaoDTO> avaliacoes;
     private String nota;
+    private String idSubSegmento;
 }
