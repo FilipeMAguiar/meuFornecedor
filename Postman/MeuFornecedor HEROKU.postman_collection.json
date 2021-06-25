@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "b9a4e4cb-45cd-4eb6-91b3-60173701890c",
-		"name": "MeuFornecedor",
+		"_postman_id": "dcfb6745-ca92-45eb-bad6-4f3d0eebf85c",
+		"name": "MeuFornecedor HEROKU",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -14,11 +14,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/usuario",
+							"raw": "https://meufornecedor.herokuapp.com/usuario",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"usuario"
 							]
@@ -41,11 +43,12 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/usuario",
+							"raw": "meufornecedor.herokuapp.com/usuario",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"usuario"
 							]
@@ -68,11 +71,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/usuario/1",
+							"raw": "https://meufornecedor.herokuapp.com/usuario/1",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"usuario",
 								"1"
@@ -87,11 +92,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/usuario?id",
+							"raw": "https://meufornecedor.herokuapp.com/usuario?id",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"usuario"
 							],
@@ -120,11 +127,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/usuario/senha",
+							"raw": "https://meufornecedor.herokuapp.com/usuario/senha",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"usuario",
 								"senha"
@@ -140,7 +149,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"idFornecedor\": \"4\",\r\n    \"idUsuario\": \"12\",\r\n    \"atendimento\": \"3\",\r\n    \"precos\": \"3\",\r\n    \"confiabilidade\": \"2\",\r\n    \"qualidadeProduto\": \"4\"\r\n}",
+							"raw": "{\r\n    \"idFornecedor\": \"4\",\r\n    \"idUsuario\": \"6\",\r\n    \"atendimento\": \"3\",\r\n    \"precos\": \"2\",\r\n    \"confiabilidade\": \"3\",\r\n    \"qualidadeProduto\": \"4\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -148,11 +157,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/usuario/avaliacao",
+							"raw": "https://meufornecedor.herokuapp.com/usuario/avaliacao",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"usuario",
 								"avaliacao"
@@ -191,11 +202,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/fornecedor",
+							"raw": "https://meufornecedor.herokuapp.com/fornecedor",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"fornecedor"
 							],
@@ -217,7 +230,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nickname\": \"Teste1\",\r\n    \"cnpj\": \"00010010001\",\r\n    \"nome\": \"Usuario Teste 1\",\r\n    \"descricao\": \"Um novo Fornecedor Teste\",\r\n    \"email\": \"teste1@dmail.com\",\r\n    \"senha\": \"123123123\",\r\n    \"idSubSegmento\": \"2\",\r\n    \"endereco\": {\r\n        \"pais\": \"Brasil\",\r\n        \"cep\": \"91787170\",\r\n        \"numero\": \"113\",\r\n        \"complemento\": \"Rua a\"\r\n    },\r\n    \"contato\": {\r\n        \"whatsapp\": \"51983013198\",\r\n        \"site\": \"www.teste.com.br\",\r\n        \"instagram\": \"@teste\",\r\n        \"emailContato\": \"teste@gmail.com\",\r\n        \"telefone\": \"51983013198\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"nickname\": \"Teste1\",\r\n    \"cnpj\": \"00010010001\",\r\n    \"nome\": \"Usuario Teste 1\",\r\n    \"descricao\": \"Um novo Fornecedor Teste\",\r\n    \"email\": \"teste1@dmail.com\",\r\n    \"senha\": \"123123123\",\r\n    \"idSubSegmento\": \"7\",\r\n    \"endereco\": {\r\n        \"pais\": \"Brasil\",\r\n        \"cep\": \"91787170\",\r\n        \"numero\": \"113\",\r\n        \"complemento\": \"Rua a\"\r\n    },\r\n    \"contato\": {\r\n        \"whatsapp\": \"51983013198\",\r\n        \"site\": \"www.teste.com.br\",\r\n        \"instagram\": \"@teste\",\r\n        \"emailContato\": \"teste@gmail.com\",\r\n        \"telefone\": \"51983013198\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -225,11 +238,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/fornecedor",
+							"raw": "https://meufornecedor.herokuapp.com/fornecedor",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"fornecedor"
 							]
@@ -243,11 +258,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/fornecedor/3",
+							"raw": "https://meufornecedor.herokuapp.com/fornecedor/3",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"fornecedor",
 								"3"
@@ -271,11 +288,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/fornecedor/3",
+							"raw": "https://meufornecedor.herokuapp.com/fornecedor/3",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"fornecedor",
 								"3"
@@ -299,11 +318,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/fornecedor/senha",
+							"raw": "https://meufornecedor.herokuapp.com/fornecedor/senha",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"fornecedor",
 								"senha"
@@ -324,7 +345,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nomeSegmento\": \"Moda\"\r\n}",
+							"raw": "{\r\n    \"nomeSegmento\": \"Eletronicos\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -332,11 +353,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/segmento",
+							"raw": "https://meufornecedor.herokuapp.com/segmento",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"segmento"
 							]
@@ -349,7 +372,18 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": null
+						"url": {
+							"raw": "https://meufornecedor.herokuapp.com/segmento",
+							"protocol": "https",
+							"host": [
+								"meufornecedor",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"segmento"
+							]
+						}
 					},
 					"response": []
 				}
@@ -365,7 +399,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nomeSubSegmento\": \"Moda Infantil\",\r\n    \"idSegmento\": \"1\"\r\n}",
+							"raw": "{\r\n    \"nomeSubSegmento\": \"Moda Infantil\",\r\n    \"idSegmento\": \"2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -373,11 +407,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/subsegmento",
+							"raw": "https://meufornecedor.herokuapp.com/subsegmento",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"subsegmento"
 							]
@@ -391,18 +427,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/subsegmento?id",
+							"raw": "https://meufornecedor.herokuapp.com/subsegmento",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"meufornecedor",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"subsegmento"
 							],
 							"query": [
 								{
 									"key": "id",
-									"value": null
+									"value": null,
+									"disabled": true
 								}
 							]
 						}
