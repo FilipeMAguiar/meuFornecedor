@@ -5,7 +5,6 @@ import fornecedores.backend.dto.request.AtualizarSenhaRequest;
 import fornecedores.backend.dto.request.AvaliacaoRequest;
 import fornecedores.backend.dto.request.UsuarioRequest;
 import fornecedores.backend.dto.response.ResponseMessage;
-import fornecedores.backend.entity.Usuario;
 import fornecedores.backend.exception.BusinessException;
 import fornecedores.backend.service.UsuarioService;
 import lombok.AllArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
+@CrossOrigin(origins = "https://meufornecedor.herokuapp.com")
 @RequestMapping("/usuario")
 @AllArgsConstructor
 public class UsuarioController {
@@ -45,6 +45,7 @@ public class UsuarioController {
         return this.service.avaliarFornecedor(request);
     }
 
+    @CrossOrigin(origins = "https://meufornecedor.herokuapp.com")
     @PutMapping("/senha")
     public ResponseMessage atualizarSenha(@RequestBody AtualizarSenhaRequest request) throws BusinessException {
         return this.service.atualizarSenha(request);
