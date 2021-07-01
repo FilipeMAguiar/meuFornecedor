@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-@CrossOrigin(origins = "https://meufornecedor.herokuapp.com")
+@CrossOrigin
 @RequestMapping("/segmento")
 @AllArgsConstructor
 public class SegmentoController {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-@CrossOrigin(origins = "https://meufornecedor.herokuapp.com")
+@CrossOrigin
 @RequestMapping("/usuario")
 @AllArgsConstructor
 public class UsuarioController {
