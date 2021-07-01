@@ -2,13 +2,11 @@ package fornecedores.backend.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -31,5 +29,6 @@ public class SubSegmento implements Serializable {
     private Segmento segmento;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subSegmento")
+    @OrderBy("nota desc")
     private List<Fornecedor> fornecedor;
 }

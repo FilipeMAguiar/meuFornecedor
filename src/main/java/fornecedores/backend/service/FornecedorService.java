@@ -14,6 +14,7 @@ import fornecedores.backend.exception.BusinessException;
 import fornecedores.backend.repository.*;
 import fornecedores.backend.util.JsonUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -40,7 +41,7 @@ public class FornecedorService {
             populaFornecedorId(id, responseDTOList, responseDTO);
             return responseDTOList;
         } else {
-            List<Fornecedor> fornecedorList = this.repository.findAll();
+            List<Fornecedor> fornecedorList = this.repository.findAll(Sort.by(Sort.Direction.DESC, "nota"));
             for (Fornecedor f: fornecedorList) {
                 populaFornecedores(responseDTOList, f);
             }
@@ -115,6 +116,7 @@ public class FornecedorService {
         fornecedor.setDescricaoFornecedor(!ObjectUtils.isEmpty(request.getDescricao())? request.getDescricao() : "");
         fornecedor.setEmail(validaEmail(request));
         fornecedor.setSenha(request.getSenha());
+        fornecedor.setNota(new Random().nextInt(6));
         SubSegmento subSegmento = subSegmentoRepository.findById(Long.valueOf(request.getIdSubSegmento())).get();
         fornecedor.setSubSegmento(subSegmento);
     }

@@ -68,7 +68,7 @@ public class SubSegmentoService {
             buildFornecedorSimples(fornecedorResponseList, f);
         }
         buildResponse.setFornecedores(fornecedorResponseList);
-            responseDTOList.add(buildResponse);
+        responseDTOList.add(buildResponse);
     }
 
     private SubSegmento buildSubSegmento(Long id, SubSegmentoResponseDTO buildResponse) {
@@ -92,7 +92,7 @@ public class SubSegmentoService {
         responseList.setNumero(f.getTelefone());
         responseList.setInstagram(!ObjectUtils.isEmpty(f.getInstagram()) ? f.getInstagram() : "@meuFornecedor");
         responseList.setSite(!ObjectUtils.isEmpty(f.getSite()) ? f.getSite() : "www.meuFornecedor.com.br");
-        responseList.setNota(new Random().nextInt(6));
+        responseList.setNota(f.getNota());
         responseDTOList.add(responseList);
     }
 }
